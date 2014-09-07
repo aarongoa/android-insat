@@ -5,17 +5,16 @@ import java.net.URL;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 public class InsatActivity extends Activity{
 	
-	private ImageView satImg;
+	private TouchImageView satImg;  //from TouchImageView.java 
 	private Button show_visible, show_ir, show_vapour, show_composite;
 	
     final String img_irc = "http://www.imd.gov.in/section/satmet/img/sector-irc.jpg";
@@ -28,12 +27,8 @@ public class InsatActivity extends Activity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
         
-        satImg = (ImageView)findViewById(R.id.imageViewImg);
+        satImg = (TouchImageView)findViewById(R.id.imageViewImg);
         show_visible = (Button)findViewById(R.id.buttonVisible);
         show_ir = (Button)findViewById(R.id.buttonIr);
         show_vapour = (Button)findViewById(R.id.buttonWv);
@@ -46,22 +41,6 @@ public class InsatActivity extends Activity{
         
     }
     
-    private void setSatImage(String urlString)
-    {
-    	try{
-
-            URL url = new URL(urlString);
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            satImg.setImageBitmap(bmp);
-            
-        }
-        catch(Exception ex)
-        {
-            Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
-        }
-   
-    }
-
     public class OnClick implements OnClickListener {
 		
 		@Override
@@ -70,21 +49,47 @@ public class InsatActivity extends Activity{
 			switch(v.getId())
 			{
 			case R.id.buttonVisible:
-				setSatImage(img_vis);
+				new Download().execute(img_vis);
 				break;
 			case R.id.buttonIr:
-				setSatImage(img_ir);
+				new Download().execute(img_ir);
 				break;
 			case R.id.buttonWv:
-				setSatImage(img_wv);
+				new Download().execute(img_wv);
 				break;
 			case R.id.buttonComposite:
-				setSatImage(img_irc);
+				new Download().execute(img_irc);
 				break;
 			}
 			
 		}
 		
 	}
+    
+    private class Download extends AsyncTask<String, Void, Bitmap>{
+    	
+    	//sets the image
+		@Override
+    	protected void onPostExecute(Bitmap bmp) {
+			// TODO Auto-generated method stub
+			satImg.setImageBitmap(bmp);
+		}
+		//downloads the image
+		@Override
+		protected Bitmap doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try{
+				URL url = new URL(params[0]);
+				Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+	            return bmp;
+			}
+			catch(Exception e){
+				Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+			}
+            
+			return null;
+		}
+    	
+    }
 	
 }
