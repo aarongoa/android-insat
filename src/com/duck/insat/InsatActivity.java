@@ -2,8 +2,11 @@ package com.duck.insat;
 
 import java.net.URL;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class InsatActivity extends Activity{
+	
 	
 	private TouchImageView satImg; //from TouchImageView.java
 	private Button show_visible, show_ir, show_vapour, show_composite;
@@ -42,20 +46,30 @@ public class InsatActivity extends Activity{
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			switch(v.getId())
-			{
-			case R.id.buttonVisible:
-				new Download().execute(img_vis);
-				break;
-			case R.id.buttonIr:
-				new Download().execute(img_ir);
-				break;
-			case R.id.buttonWv:
-				new Download().execute(img_wv);
-				break;
-			case R.id.buttonComposite:
-				new Download().execute(img_irc);
-				break;
+			
+			ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+			
+			//check if connected to Internet. Otherwise app crashes
+			if(activeNetwork != null && activeNetwork.isConnected()){
+				switch(v.getId())
+				{
+				case R.id.buttonVisible:
+					new Download().execute(img_vis);
+					break;
+				case R.id.buttonIr:
+					new Download().execute(img_ir);
+					break;
+				case R.id.buttonWv:
+					new Download().execute(img_wv);
+					break;
+				case R.id.buttonComposite:
+					new Download().execute(img_irc);
+					break;
+				}
+			}
+			else{
+				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
