@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <EditText
+        android:id="@+id/cityName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:textColor="@android:color/black"
+        android:hint="City"/>
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignLeft="@+id/cityName"
+        android:layout_below="@+id/cityName"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/black"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/sampledTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_alignLeft="@+id/cityName"
+        android:layout_below="@+id/location"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/black"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:layout_alignLeft="@+id/cityName"
+        android:layout_below="@+id/sampledTime"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/black"
+        android:text=""/>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium" 
+        android:layout_alignLeft="@+id/cityName"
+        android:layout_below="@+id/temperature"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/black"
+        android:text=""/>
+
+    <TextView
+        android:id="@+id/highLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cityName"
+        android:layout_below="@+id/description"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/black"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cityName"
+        android:layout_below="@+id/highLow"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/black"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/pressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cityName"
+        android:layout_below="@+id/humidity"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/black"
+        android:text="" />
+
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="13dp"
+        android:layout_marginRight="17dp"
+        android:textColor="@android:color/black"
+        android:text="Check" />
+
+</RelativeLayout>

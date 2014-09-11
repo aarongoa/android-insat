@@ -15,16 +15,34 @@ public final class R {
         public static final int icon=0x7f020001;
     }
     public static final class id {
-        public static final int buttonComposite=0x7f050003;
-        public static final int buttonIr=0x7f050001;
-        public static final int buttonVisible=0x7f050000;
-        public static final int buttonWv=0x7f050002;
-        public static final int imageViewImg=0x7f050004;
+        public static final int buttonComposite=0x7f060003;
+        public static final int buttonIr=0x7f060001;
+        public static final int buttonVisible=0x7f060000;
+        public static final int buttonWv=0x7f060002;
+        public static final int cityName=0x7f060005;
+        public static final int description=0x7f060009;
+        public static final int highLow=0x7f06000a;
+        public static final int humidity=0x7f06000b;
+        public static final int imageViewImg=0x7f060004;
+        public static final int location=0x7f060006;
+        public static final int pressure=0x7f06000c;
+        public static final int sampledTime=0x7f060007;
+        public static final int submitBtn=0x7f06000d;
+        public static final int temperature=0x7f060008;
+        public static final int view_map=0x7f06000e;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int activity_insatactivity=0x7f030000;
+        public static final int activity_service_handler=0x7f030001;
+        public static final int activity_weather=0x7f030002;
+    }
+    public static final class menu {
+        public static final int optionsmenu=0x7f050000;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int hello_world=0x7f040002;
+        public static final int title_activity_service_handler=0x7f040003;
+        public static final int title_activity_weather=0x7f040001;
     }
 }

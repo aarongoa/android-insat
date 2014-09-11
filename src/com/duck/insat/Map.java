@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class InsatActivity extends Activity{
+public class Map extends Activity{
 	
 	
 	private TouchImageView satImg; //from TouchImageView.java
@@ -28,7 +28,7 @@ public class InsatActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.activity_insatactivity);
 		
 		satImg = (TouchImageView)findViewById(R.id.imageViewImg);
 		show_visible = (Button)findViewById(R.id.buttonVisible);
