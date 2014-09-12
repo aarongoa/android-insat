@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import java.text.Normalizer;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -43,7 +45,7 @@ public class WeatherActivity extends Activity {
 	String url1 = "http://api.worldweatheronline.com/free/v1/weather.ashx?q=";
 	String url2 = "&format=json&num_of_days=1&key=34e358412a58f64a992836610ea5a9c01025d8c4";
 	String finalUrl = "";
-
+	
 	Button submitBtn;
 
 	JSONObject weatherData;
@@ -74,8 +76,13 @@ public class WeatherActivity extends Activity {
 				// TODO Auto-generated method stub
 				if(activeNetwork != null && activeNetwork.isConnected()){
 					cityNameString = cityName.getText().toString();
+					
+					//to remove accents from words
+					cityNameString = Normalizer.normalize(cityNameString, Normalizer.Form.NFD);
+					cityNameString = cityNameString.replaceAll("\\p{M}", "");
+					
 					try{
-						finalUrl = url1 + cityNameString + url2;
+						finalUrl = url1 + cityNameString.trim() + url2;
 						new GetContacts().execute(finalUrl);
 
 					}catch(Exception e){
