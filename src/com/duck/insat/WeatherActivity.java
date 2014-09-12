@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,14 +39,15 @@ import android.widget.Toast;
 
 public class WeatherActivity extends Activity {
 
-	TextView location, sampledTime, temperature, description, highLow, humidity, pressure;
+	TextView location, sampledTime, temperature, description, highLow,
+			humidity, pressure;
 	EditText cityName;
 
 	String cityNameString = "";
 	String url1 = "http://api.worldweatheronline.com/free/v1/weather.ashx?q=";
 	String url2 = "&format=json&num_of_days=1&key=34e358412a58f64a992836610ea5a9c01025d8c4";
 	String finalUrl = "";
-	
+
 	Button submitBtn;
 
 	JSONObject weatherData;
@@ -65,35 +67,7 @@ public class WeatherActivity extends Activity {
 		cityName = (EditText) findViewById(R.id.cityName);
 		submitBtn = (Button) findViewById(R.id.submitBtn);
 
-		submitBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-
-				//check if connected to internet
-				ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-				// TODO Auto-generated method stub
-				if(activeNetwork != null && activeNetwork.isConnected()){
-					cityNameString = cityName.getText().toString();
-					
-					//to remove accents from words
-					cityNameString = Normalizer.normalize(cityNameString, Normalizer.Form.NFD);
-					cityNameString = cityNameString.replaceAll("\\p{M}", "");
-					
-					try{
-						finalUrl = url1 + cityNameString.trim() + url2;
-						new GetContacts().execute(finalUrl);
-
-					}catch(Exception e){
-						Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-					}
-				}else{
-					Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG).show();
-				}
-
-			}
-		});
+		submitBtn.setOnClickListener(new OnClick());
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,12 +89,14 @@ public class WeatherActivity extends Activity {
 		}
 	}
 
-
-	//fetches the JSON data and displays
+	// fetches the JSON data and displays
 	private class GetContacts extends AsyncTask<String, Void, Void> {
 
-		ProgressDialog pDialog = new ProgressDialog(WeatherActivity.this);
-		String temperatureString, humidityString, pressureString, descriptionString, timeString;
+		ProgressDialog pDialog = new ProgressDialog(WeatherActivity.this,
+				AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+
+		String temperatureString, humidityString, pressureString,
+				descriptionString, timeString;
 		String maxTempString, minTempString;
 
 		String jsonStr = "";
@@ -139,10 +115,10 @@ public class WeatherActivity extends Activity {
 		@Override
 		protected Void doInBackground(String... arg0) {
 
-
 			try {
 				// Set up HTTP post
-				// HttpClient is more then less deprecated. Need to change to URLConnection
+				// HttpClient is more then less deprecated. Need to change to
+				// URLConnection
 				HttpClient httpClient = new DefaultHttpClient();
 
 				HttpPost httpPost = new HttpPost(arg0[0].toString());
@@ -153,13 +129,15 @@ public class WeatherActivity extends Activity {
 				// Read content & Log
 				inputStream = httpEntity.getContent();
 			} catch (Exception e) {
-				Toast.makeText(WeatherActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(WeatherActivity.this, e.getMessage(),
+						Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
 
 			// Convert response to string using String Builder
 			try {
-				BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"), 8);
+				BufferedReader bReader = new BufferedReader(
+						new InputStreamReader(inputStream, "iso-8859-1"), 8);
 				StringBuilder sBuilder = new StringBuilder();
 
 				String line;
@@ -171,7 +149,8 @@ public class WeatherActivity extends Activity {
 				jsonStr = sBuilder.toString();
 
 			} catch (Exception e) {
-				Log.e("StringBuilding & BufferedReader", "Error converting result " + e.toString());
+				Log.e("StringBuilding & BufferedReader",
+						"Error converting result " + e.toString());
 			}
 
 			return null;
@@ -189,7 +168,8 @@ public class WeatherActivity extends Activity {
 					JSONObject jsonObj = new JSONObject(jsonStr);
 
 					weatherData = jsonObj.getJSONObject("data");
-					JSONArray jsonArr = weatherData.getJSONArray("current_condition");
+					JSONArray jsonArr = weatherData
+							.getJSONArray("current_condition");
 
 					jsonObj = jsonArr.getJSONObject(0);
 
@@ -210,23 +190,67 @@ public class WeatherActivity extends Activity {
 					maxTempString = jsonObj1.getString("tempMaxC");
 					minTempString = jsonObj1.getString("tempMinC");
 
-
 				} catch (Exception e) {
-					Toast.makeText(WeatherActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(WeatherActivity.this, e.getMessage(),
+							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}
 			} else {
-				Toast.makeText(getApplicationContext(), "Couldn't get any data from the url", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),
+						"Couldn't get any data from the url", Toast.LENGTH_LONG)
+						.show();
 			}
 
-			location.setText(cityNameString.toUpperCase());
+			location.setText(cityName.getText().toString().toUpperCase());
 			sampledTime.setText("Sampled time: " + timeString);
 			temperature.setText(temperatureString + " °C");
 			description.setText(descriptionString);
-			highLow.setText("Max: " + maxTempString + " C" + "  Min: " + minTempString + " C");
+			highLow.setText("Max: " + maxTempString + " C" + "  Min: "
+					+ minTempString + " C");
 			humidity.setText("Humidity: " + humidityString);
 			pressure.setText("Pressure: " + pressureString);
 
+		}
+
+	}
+
+	private class OnClick implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			// check if connected to internet
+			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+			// TODO Auto-generated method stub
+			if (activeNetwork != null && activeNetwork.isConnected()) {
+				cityNameString = cityName.getText().toString();
+
+				// removes whitespaces at the end
+				cityNameString = cityNameString.trim();
+
+				// removes white spaces between 2 words and replaces with '&' to
+				// pass it in the URL. Eg: San&Francisco
+				cityNameString = cityNameString.replaceAll("\\s", "&");
+
+				// to remove accents from words
+				cityNameString = Normalizer.normalize(cityNameString,
+						Normalizer.Form.NFD);
+				cityNameString = cityNameString.replaceAll("\\p{M}", "");
+
+				try {
+					finalUrl = url1 + cityNameString + url2;
+					new GetContacts().execute(finalUrl);
+
+				} catch (Exception e) {
+					Toast.makeText(getApplicationContext(), e.getMessage(),
+							Toast.LENGTH_LONG).show();
+				}
+			} else {
+				Toast.makeText(getApplicationContext(),
+						"Check Internet Connection", Toast.LENGTH_LONG).show();
+			}
 		}
 
 	}
