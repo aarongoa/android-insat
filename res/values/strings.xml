@@ -4,6 +4,10 @@
     <string name="app_name">Weather</string>
     <string name="title_activity_weather">WeatherActivity</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_service_handler">ServiceHandler</string>
+    <string name="city">City</string>
+    <string name="visible">Visible</string>
+    <string name="infrared">Infrared</string>
+    <string name="composite">Composite</string>
+    <string name="water_vapour">Water Vapour</string>
 
 </resources>
