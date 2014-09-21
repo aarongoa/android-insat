@@ -9,5 +9,6 @@
     <string name="infrared">Infrared</string>
     <string name="composite">Composite</string>
     <string name="water_vapour">Water Vapour</string>
+    <string name="check">Check</string>
 
 </resources>

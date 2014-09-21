@@ -40,7 +40,7 @@ import android.widget.Toast;
 public class WeatherActivity extends Activity {
 
 	TextView location, sampledTime, temperature, description, highLow,
-			humidity, pressure;
+	humidity, pressure;
 	EditText cityName;
 
 	String cityNameString = "";
@@ -96,7 +96,7 @@ public class WeatherActivity extends Activity {
 				AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
 
 		String temperatureString, humidityString, pressureString,
-				descriptionString, timeString;
+		descriptionString, timeString;
 		String maxTempString, minTempString;
 
 		String jsonStr = "";
@@ -222,10 +222,14 @@ public class WeatherActivity extends Activity {
 			// check if connected to internet
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+			
+			cityNameString = cityName.getText().toString();
 
 			// TODO Auto-generated method stub
-			if (activeNetwork != null && activeNetwork.isConnected()) {
-				cityNameString = cityName.getText().toString();
+			if(cityNameString.isEmpty()){
+				Toast.makeText(getApplicationContext(), "Enter City Name", Toast.LENGTH_LONG).show();
+			}
+			else if (activeNetwork != null && activeNetwork.isConnected()) {
 
 				// removes whitespaces at the end
 				cityNameString = cityNameString.trim();
